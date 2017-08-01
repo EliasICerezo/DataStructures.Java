@@ -1,9 +1,9 @@
-import LinkedPriorityQueue.LinkedPriorityQueue;
+import LinkedPriorityQueue.*;
 import LinkedPriorityQueue.PriorityQueue;
 
 public class TestLPQ {
 	public static void main(String [] args){
-		PriorityQueue<Integer> pq=new LinkedPriorityQueue<>();
+		PriorityQueue<Integer> pq=new LinkedNOPriorityQueue<>();
 		System.out.println(pq.isEmpty());
 		
 		pq.enqueue(2);
