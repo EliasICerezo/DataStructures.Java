@@ -57,7 +57,7 @@ public class LinkedBag<T extends Comparable<? super T>> implements Bag<T> {
 				prev.next = nuevo;
 			}
 		}
-
+		
 	}
 
 	@Override

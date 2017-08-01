@@ -1,12 +1,12 @@
 import java.util.Iterator;
 
+import Bag.ArrayBag;
 import Bag.Bag;
-import Bag.LinkedBag;
 
 
 public class TestBag {
 	public static void main(String[] args){
-		Bag<Integer> a=new LinkedBag<>();
+		Bag<Integer> a=new ArrayBag<>();
 		
 		a.insert(1);
 		a.insert(2);
@@ -17,8 +17,8 @@ public class TestBag {
 		a.insert(7);
 		System.out.println(a.toString());
 		System.out.println(a.occurrences(1));
-		a.delete(1);
-		a.delete(1);
+//		a.delete(1);
+//		a.delete(1);
 		System.out.println(a.toString());
 		//System.out.println(it.hasNext());
 		Iterator<Integer> it=a.iterator();
@@ -26,7 +26,7 @@ public class TestBag {
 			
 			System.out.print(it.next()+" ");
 		}
-		System.out.println(it.hasNext());
+		//System.out.println(it.hasNext());
 		
 	}
 	
