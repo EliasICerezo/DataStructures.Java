@@ -1,18 +1,6 @@
-/**
- * @author Pepe Gallardo, Data Structures, Grado en Informática. UMA.
- *
- * Weigth Biased Leftist Heaps
- */
-
 package dataStructures.heap;
 
-/**
- * Heap implemented using weight biased leftist heap-ordered binary trees.
- * 
- * @param <T>
- *            Type of elements in heap.
- */
-public class WBLeftistHeap<T extends Comparable<? super T>> implements Heap<T> {
+public class MaxifobicHeap<T extends Comparable<? super T>> implements Heap<T> {
 
 	private static class Tree<E> {
 		E elem;
@@ -25,6 +13,20 @@ public class WBLeftistHeap<T extends Comparable<? super T>> implements Heap<T> {
 
 	private static <T> int weight(Tree<T> t) {
 		return t == null ? 0 : t.weight;
+	}
+
+	private static <T extends Comparable<? super T>> Tree<T> mayor(Tree<T> h1, Tree<T> h2, Tree<T> h3) {
+				
+		
+		
+				if(weight(h1)>=weight(h2) && weight(h1)>=weight(h3)){
+					return h1;
+				}else if(weight(h2)>=weight(h1) && weight(h2)>=weight(h3)){
+					return h2;
+				}else {
+					return h3;
+				}
+		
 	}
 
 	// Merges two heap trees along their right spines.
@@ -45,22 +47,30 @@ public class WBLeftistHeap<T extends Comparable<? super T>> implements Heap<T> {
 		}
 
 		// keep merging along right spine
-		h1.right = merge(h1.right, h2);
-
-		int wL = weight(h1.left);
-		int wR = weight(h1.right);
-		h1.weight = wL + wR + 1; // set new weight
-
-		// put always heavier heap on left side
-		if (wL < wR) {
-			Tree<T> aux = h1.left;
-			h1.left = h1.right;
-			h1.right = aux;
+		Tree<T> aux=mayor(h1.right,h1.left,h2);
+		if(aux==h1.right){
+			h1.left=merge(h1.left,h2);
+			h1.right=aux;
+			
+		}else if(aux==h1.left){
+			h1.left=merge(h1.right,h2);
+			h1.right=aux;
+		}else{
+			h1.left=merge(h1.right,h1.left);
+			h1.right=aux;
 		}
+		
+		
+		
+		
+		
 
 		return h1;
 	}
-
+	public Tree<T> mezcla (Tree<T> h2){
+		return merge(root,h2);
+		
+	}
 	// copies a tree
 	private static <T extends Comparable<? super T>> Tree<T> copy(Tree<T> h) {
 		if (h == null)
@@ -75,29 +85,14 @@ public class WBLeftistHeap<T extends Comparable<? super T>> implements Heap<T> {
 		}
 	}
 
-	/**
-	 * Creates an empty Weigth Biased Leftist Heap.
-	 * <p>
-	 * Time complexity: O(1)
-	 */
-	public WBLeftistHeap() {
+	public MaxifobicHeap() {
 		root = null;
 	}
 
-	/**
-	 * Copy constructor for Weigth Biased Leftist Heaps.
-	 * <p>
-	 * Time complexity: O(n)
-	 */
-	public WBLeftistHeap(WBLeftistHeap<T> h) {
+	public MaxifobicHeap(MaxifobicHeap<T> h) {
 		root = copy(h.root);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Time complexity: O(1)
-	 */
 	public boolean isEmpty() {
 		return root == null;
 	}
@@ -126,22 +121,6 @@ public class WBLeftistHeap<T extends Comparable<? super T>> implements Heap<T> {
 			return root.elem;
 	}
 
-	public int compareTo(Heap<T> o) {
-
-		if (o.size() == root.weight) {
-			return 0;
-		}else if(o.size()<root.weight){
-			return 1;
-		}else{
-			return -1;
-		}
-
-		
-	}
-	
-	
-	
-	
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -191,4 +170,23 @@ public class WBLeftistHeap<T extends Comparable<? super T>> implements Heap<T> {
 		return className + "(" + toStringRec(this.root) + ")";
 	}
 
+	/*
+	 * Equals: Return if a tree is equal to another one taking in consideration
+	 * his weight, root and if it is a heap or not
+	 */
+	
+	public int compareTo(Heap<T> o) {
+
+		if (o.size() == root.weight) {
+			return 0;
+		}else if(o.size()<root.weight){
+			return 1;
+		}else{
+			return -1;
+		}
+
+		
+	}
+	
+	
 }

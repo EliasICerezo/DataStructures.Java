@@ -44,5 +44,7 @@ public interface Heap<T extends Comparable<? super T>> {
 	 * @throws <code>EmptyHeapException</code> if heap stores no element.
 	 */
 	void delMin();	
-
+	
+	
+	
 }
