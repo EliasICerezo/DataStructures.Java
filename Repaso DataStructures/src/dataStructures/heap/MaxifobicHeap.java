@@ -1,5 +1,9 @@
 package dataStructures.heap;
 
+import java.util.List;
+
+import dataStructures.list.ArrayList;
+
 public class MaxifobicHeap<T extends Comparable<? super T>> implements Heap<T> {
 
 	private static class Tree<E> {
@@ -15,62 +19,68 @@ public class MaxifobicHeap<T extends Comparable<? super T>> implements Heap<T> {
 		return t == null ? 0 : t.weight;
 	}
 
-	private static <T extends Comparable<? super T>> Tree<T> mayor(Tree<T> h1, Tree<T> h2, Tree<T> h3) {
-				
-		
-		
-				if(weight(h1)>=weight(h2) && weight(h1)>=weight(h3)){
-					return h1;
-				}else if(weight(h2)>=weight(h1) && weight(h2)>=weight(h3)){
-					return h2;
-				}else {
-					return h3;
-				}
-		
+	private static <T extends Comparable<? super T>> ArrayList<Tree<T>> mayor(Tree<T> h1, Tree<T> h2, Tree<T> h3) {
+
+		ArrayList<Tree<T>> l = new ArrayList<Tree<T>>();
+
+		if (weight(h1) >= weight(h2) && weight(h1) >= weight(h3)) {
+			l.append(h1);
+			l.append(h2);
+			l.append(h3);
+			return l;
+		} else if (weight(h2) >= weight(h1) && weight(h2) >= weight(h3)) {
+			l.append(h2);
+			l.append(h1);
+			l.append(h3);
+			return l;
+		} else {
+			l.append(h3);
+			l.append(h1);
+			l.append(h2);
+			return l;
+		}
+
 	}
 
 	// Merges two heap trees along their right spines.
 	// Returns merged heap.
 	// Reuses nodes during merge
 	private static <T extends Comparable<? super T>> Tree<T> merge(Tree<T> h1, Tree<T> h2) {
-		if (h1 == null)
+		if(weight(h1)==0 && weight(h2)==0){
+			return null;
+		}else if (h1 == null){
 			return h2;
-		if (h2 == null)
+		}else if (h2 == null){
 			return h1;
-
-		// force heap1 to have smaller root
-		if (h2.elem.compareTo(h1.elem) < 0) {
-			// swap heap1 and heap2
-			Tree<T> tmp = h1;
-			h1 = h2;
-			h2 = tmp;
-		}
-
-		// keep merging along right spine
-		Tree<T> aux=mayor(h1.right,h1.left,h2);
-		if(aux==h1.right){
-			h1.left=merge(h1.left,h2);
-			h1.right=aux;
+		}else if (h1.elem.compareTo(h2.elem) <= 0) {
+			Tree<T> current=new Tree<>();
+			current.elem=h1.elem;
+			current.weight=weight(h1)+weight(h2);
 			
-		}else if(aux==h1.left){
-			h1.left=merge(h1.right,h2);
-			h1.right=aux;
-		}else{
-			h1.left=merge(h1.right,h1.left);
-			h1.right=aux;
+			ArrayList<Tree<T>> aux = mayor(h1.right, h1.left, h2);
+			if (aux.size() != 3) {
+				throw new RuntimeException("numero de elementos devueltos por mayor incorrectos");
+			}
+			Tree<T> mayor = aux.get(0);
+			Tree<T> resto1 = aux.get(1);
+			Tree<T> resto2 = aux.get(2);
+			
+			current.right = mayor;
+			current.left = merge(resto1, resto2);
+			
+			System.out.println("ROOT "+weight(h1)+" R "+weight(h1.right)+" L " + weight(h1.left));
+			return current;
+		} else {
+			System.out.println("He pasado x aqui");
+			return merge(h2, h1);
 		}
-		
-		
-		
-		
-		
+	}
 
-		return h1;
+	public Tree<T> mezcla(Tree<T> h2) {
+		return merge(root, h2);
+
 	}
-	public Tree<T> mezcla (Tree<T> h2){
-		return merge(root,h2);
-		
-	}
+
 	// copies a tree
 	private static <T extends Comparable<? super T>> Tree<T> copy(Tree<T> h) {
 		if (h == null)
@@ -174,19 +184,17 @@ public class MaxifobicHeap<T extends Comparable<? super T>> implements Heap<T> {
 	 * Equals: Return if a tree is equal to another one taking in consideration
 	 * his weight, root and if it is a heap or not
 	 */
-	
+
 	public int compareTo(Heap<T> o) {
 
 		if (o.size() == root.weight) {
 			return 0;
-		}else if(o.size()<root.weight){
+		} else if (o.size() < root.weight) {
 			return 1;
-		}else{
+		} else {
 			return -1;
 		}
 
-		
 	}
-	
-	
+
 }
