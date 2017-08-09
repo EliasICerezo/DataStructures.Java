@@ -68,10 +68,10 @@ public class MaxifobicHeap<T extends Comparable<? super T>> implements Heap<T> {
 			current.right = mayor;
 			current.left = merge(resto1, resto2);
 			
-			System.out.println("ROOT "+weight(h1)+" R "+weight(h1.right)+" L " + weight(h1.left));
+			//System.out.println("ROOT "+weight(h1)+" R "+weight(h1.right)+" L " + weight(h1.left));
 			return current;
 		} else {
-			System.out.println("He pasado x aqui");
+			//System.out.println("He pasado x aqui");
 			return merge(h2, h1);
 		}
 	}
