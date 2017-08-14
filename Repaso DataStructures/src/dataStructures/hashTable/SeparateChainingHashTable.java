@@ -227,7 +227,7 @@ public class SeparateChainingHashTable<K, V> implements HashTable<K, V> {
 				throw new NoSuchElementException();
 			Node<K, V> next = current;
 
-			current = current.next;
+			
 			advance();
 
 			return next;
