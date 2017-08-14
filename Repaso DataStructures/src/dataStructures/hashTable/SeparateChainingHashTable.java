@@ -65,7 +65,11 @@ public class SeparateChainingHashTable<K, V> implements HashTable<K, V> {
 	public boolean isEmpty() {
 		return size == 0;
 	}
-
+	
+	public int tabletam(){
+		return table.length;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -152,7 +156,24 @@ public class SeparateChainingHashTable<K, V> implements HashTable<K, V> {
 			size--;
 		}
 	}
-
+	
+	public int len(int idx){
+		if(idx<0 || idx>table.length){
+			throw new RuntimeException("Idx out of bounds");
+		}
+		if(table[idx]==null){
+			return 0;
+		}else{
+			int res=1;
+			Node<K,V> aux=table[idx];
+			while(aux!=null){
+				res++;
+				aux=aux.next;
+			}
+			return res;
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	void rehashing() {
 		// compute new table size
