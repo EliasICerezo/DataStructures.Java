@@ -17,9 +17,9 @@ public class HashBagTest {
 		System.out.println(bag.occurrences(1));
 		System.out.println(bag);
 		
-//		while(bag.iterator().hasNext()){
-//			System.out.println(bag.iterator().next()+" ");
-//		}
+		while(bag.iterator().hasNext()){
+			System.out.println(bag.iterator().next()+" ");
+		}
 		
 	}
 

@@ -108,7 +108,7 @@ public class SeparateChainingHashTable<K, V> implements HashTable<K, V> {
 		int idx = hash(k);
 		Node<K, V> node = searchNode(k, idx);
 		if (node == null) {
-			table[idx] = new Node<K, V>(k, v, table[idx]);
+			table[idx] = new Node<K, V>(k, v, null);
 			size++;
 		} else
 			node.value = v;
@@ -219,7 +219,7 @@ public class SeparateChainingHashTable<K, V> implements HashTable<K, V> {
 		}
 
 		public boolean hasNext() {
-			return (current != null);
+			return idx<table.length-1;
 		}
 
 		public Node<K, V> nextNode() {
@@ -227,7 +227,7 @@ public class SeparateChainingHashTable<K, V> implements HashTable<K, V> {
 				throw new NoSuchElementException();
 			Node<K, V> next = current;
 
-			
+			current=current.next;
 			advance();
 
 			return next;
