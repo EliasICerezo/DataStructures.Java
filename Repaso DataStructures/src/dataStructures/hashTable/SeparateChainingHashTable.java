@@ -38,7 +38,8 @@ public class SeparateChainingHashTable<K, V> implements HashTable<K, V> {
 	private Node<K, V> table[];
 	private int size; // number of elements inserted in table
 	private double maxLoadFactor;
-
+	private int mcol;
+	private int col;
 	/**
 	 * Creates an empty separate chaining hash table.
 	 * <p>
@@ -50,6 +51,16 @@ public class SeparateChainingHashTable<K, V> implements HashTable<K, V> {
 	 *            Maximum load factor to tolerate. If exceeded, rehashing is
 	 *            performed automatically.
 	 */
+	@SuppressWarnings("unchecked")
+	public SeparateChainingHashTable(int numChains, double loadFactor, int maxcol) {
+		table = (Node<K, V>[]) new Node[numChains];
+		size = 0;
+		maxLoadFactor = loadFactor;
+		mcol=maxcol;
+	}
+	
+	
+	
 	@SuppressWarnings("unchecked")
 	public SeparateChainingHashTable(int numChains, double loadFactor) {
 		table = (Node<K, V>[]) new Node[numChains];
@@ -90,9 +101,10 @@ public class SeparateChainingHashTable<K, V> implements HashTable<K, V> {
 	private Node<K, V> searchNode(K k, int idx) {
 		Node<K, V> current = table[idx];
 
-		while ((current != null) && (!current.key.equals(k)))
+		while ((current != null) && (!current.key.equals(k))){
+			col++;
 			current = current.next;
-
+		}
 		return current;
 	}
 
@@ -102,7 +114,7 @@ public class SeparateChainingHashTable<K, V> implements HashTable<K, V> {
 	 * Time complexity: near O(1)
 	 */
 	public void insert(K k, V v) {
-		if (loadFactor() > maxLoadFactor)
+		if (loadFactor() > maxLoadFactor || col>mcol)
 			rehashing();
 
 		int idx = hash(k);
