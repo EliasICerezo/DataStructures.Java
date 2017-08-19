@@ -14,4 +14,5 @@ public interface WGraph<V> {
 	public int numVertices();
 	public int numEdges();
 	public Dictionary<V,Integer> successors(V v);
+	public void updateEdges(Tuple2<V,Integer> t, int n);
 }

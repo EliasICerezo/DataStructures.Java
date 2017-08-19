@@ -49,11 +49,23 @@ public class WeightedGraph<V> implements WGraph<V> {
 	}
 	
 	public Set<V> vertices(){
-		return vertices;
+		Set<V>res=new HashSet<>();
+		for(V v:vertices){
+			res.insert(v);
+		}
+		
+		
+		return res;
 	}
 	
 	public Dictionary <Tuple2<V,V>,Integer> aristas(){
-		return aristas;
+		Dictionary <Tuple2<V,V>,Integer> res=new HashDictionary<>();
+		for(Tuple2<Tuple2<V,V>,Integer> v: aristas.keysValues()){
+			res.insert(v._1(), v._2());
+		}
+		
+		
+		return res;
 	}
 	
 	public int numVertices(){
@@ -74,6 +86,17 @@ public class WeightedGraph<V> implements WGraph<V> {
 		
 		return res;
 	}
-	
+	public void updateEdges(Tuple2<V,Integer> t, int n){
+		V ver=t._1();
+		
+		for(Tuple2<Tuple2<V,V>, Integer> k : aristas.keysValues()){
+			if(k._1()._1().equals(ver) || k._1()._2().equals(ver)){
+				int nuevo=k._2()+n;
+				deleteEdge(k._1()._1(), k._1()._2());
+				addEdge(k._1()._1(), k._1()._2(),nuevo);
+			}
+		}
+		
+	}
 	
 }
