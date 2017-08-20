@@ -10,14 +10,14 @@ import dataStructures.set.HashSet;
 import dataStructures.set.Set;
 import dataStructures.tuple.Tuple2;
 
-public class Dijkstra<V> {
+public class GraphOperators<V> {
 	
 	WGraph<V> g;
 	Set<V>v;
 	Set<V>vopt;
 	V src;
 	Dictionary<Integer,V> dict;
-	public Dijkstra(WGraph<V> g,V ini){
+	public GraphOperators(WGraph<V> g,V ini){
 		this.g=g;
 		//Inicializamos v con todos los vertices menos el inicial
 		v=g.vertices();

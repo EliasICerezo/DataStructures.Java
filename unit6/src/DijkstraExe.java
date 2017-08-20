@@ -1,4 +1,4 @@
-import dataStructures.graph.Dijkstra;
+import dataStructures.graph.GraphOperators;
 import dataStructures.graph.WGraph;
 import dataStructures.graph.WeightedGraph;
 import dataStructures.set.Set;
@@ -22,7 +22,7 @@ public class DijkstraExe {
 		g.addEdge('d', 'e', 4);
 		g.addEdge('c', 'e', 6);
 		//g.addEdge('a', 'a', 0);
-		Dijkstra<Character> d=new Dijkstra<Character>(g,'a');
+		GraphOperators<Character> d=new GraphOperators<Character>(g,'a');
 		
 		
 		
