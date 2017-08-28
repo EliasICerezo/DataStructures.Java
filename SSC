@@ -1,0 +1,116 @@
+
+import java.util.Iterator;
+
+import dataStructures.graph.*;
+import dataStructures.set.HashSet;
+import dataStructures.set.Set;
+
+public class SCC {
+
+
+	public static <V> DiGraph<V> reverseDiGraph(DiGraph<V> dg){
+		DiGraph<V> aux = new DictionaryDiGraph<>();
+		Set<V> verts = dg.vertices();
+		for(V v : verts){
+			Set<V> suc = dg.successors(v);
+			aux.addVertex(v);
+			for(V w : suc){
+				aux.addVertex(w);
+				aux.addDiEdge(w, v);
+			}
+		}
+		return aux;
+	}
+
+	public static <V> DiGraph<V> restrictDiGraph(DiGraph<V> g, Set<V> vs){
+		DiGraph<V> aux = new DictionaryDiGraph<>();
+		for(V v : vs) aux.addVertex(v);
+		for(V v : vs){
+			Set<V> suc = g.successors(v);
+			for(V w : suc){
+				if(vs.isElem(w)){
+					aux.addDiEdge(v, w);
+				}
+			}
+		}
+		return aux;
+	}
+
+	public static <V> Set<V> sccOf (DiGraph<V> g, V src){
+		//1
+		Set<V> aux = new HashSet<>();
+		DepthFirstTraversal<V> dft = new DepthFirstTraversal<V>(g, src);
+		Iterator<V> iter = dft.vertices().iterator();
+		while(iter.hasNext()){
+			aux.insert(iter.next());
+		}
+		//2
+		DiGraph<V> gr = restrictDiGraph(g, aux);
+		//3
+		gr=reverseDiGraph(gr);
+		//4
+		Set<V> res = new HashSet<>();
+		DepthFirstTraversal<V> dft2 = new DepthFirstTraversal<V>(gr, src);
+		Iterator<V> iter2 = dft2.vertices().iterator();
+		while(iter2.hasNext()){
+			res.insert(iter2.next());
+		}
+		return res;
+	}
+
+	private static <V> DiGraph<V> cleanDiGraph(DiGraph<V> g,Set<V> s){
+		DiGraph<V> newGraph = new DictionaryDiGraph<>();
+		for(V v : g.vertices()){
+			if(!s.isElem(v)){
+				newGraph.addVertex(v);
+			}
+		}
+		for(V v2 : newGraph.vertices()){
+			Set<V> aux = g.successors(v2);
+			for(V w : aux){
+				if(!s.isElem(w)){
+					newGraph.addDiEdge(v2, w);
+				}
+			}
+		}
+		return newGraph;
+
+	}
+
+	public static <V> Set<Set<V>> stronglyConnectedComponentsDiGraph(DiGraph<V> g){
+		Set<Set<V>> res = new HashSet<>();
+		while(g.vertices().size()!=0){
+			Set<V> sols = sccOf(g, g.vertices().iterator().next());
+			res.insert(sols);
+			g=cleanDiGraph(g, sols);
+		}
+		return res;
+	}
+
+	public static void main(String[] args) {
+		DiGraph<Integer> dg = new DictionaryDiGraph<>();
+		for(int i=1;i<=8;i++){
+			dg.addVertex(i);
+		}
+		dg.addDiEdge(1, 2);
+		dg.addDiEdge(2, 5);
+		dg.addDiEdge(2, 6);
+		dg.addDiEdge(3, 4);
+		dg.addDiEdge(3, 7);
+		dg.addDiEdge(4, 3);
+		dg.addDiEdge(4, 8);
+		dg.addDiEdge(5, 1);
+		dg.addDiEdge(5, 6);
+		dg.addDiEdge(6, 7);
+		dg.addDiEdge(7, 6);
+		dg.addDiEdge(8, 4);
+		dg.addDiEdge(8, 7);
+		Set<Integer> set = new HashSet<>();
+		set.insert(1);
+		set.insert(2);
+		set.insert(5);
+
+
+		System.out.println(stronglyConnectedComponentsDiGraph(dg));
+	}
+}
